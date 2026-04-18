@@ -17,13 +17,13 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<WelcomePage />} />
-          <Route path="/shop-login" element={<ShopLoginPage />} />
+          <Route path="/login" element={<ShopLoginPage />} />
           
           {/* Protected Routes */}
-          <Route path="/dashboard/:shopId?" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
-          <Route path="/employees/:shopId?" element={<ProtectedRoute><EmployeePage /></ProtectedRoute>} />
-          <Route path="/settings/:shopId?" element={<ProtectedRoute><SettingPage /></ProtectedRoute>} />
-          <Route path="/employee-history/:shopId?" element={<ProtectedRoute><EmployeeHistoryPage /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+          <Route path="/employees" element={<ProtectedRoute><EmployeePage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingPage /></ProtectedRoute>} />
+          <Route path="/employee-history" element={<ProtectedRoute><EmployeeHistoryPage /></ProtectedRoute>} />
         </Routes>
 
         {/* ✅ Global Toast Container */}

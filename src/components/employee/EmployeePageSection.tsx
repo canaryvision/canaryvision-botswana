@@ -11,7 +11,6 @@ import { db } from "../../firebase/config";
 import { collection, onSnapshot, query, where, doc, deleteDoc } from "firebase/firestore";
 
 const EmployeePageSection: React.FC = () => {
-  const { shopId } = useParams<{ shopId: string }>();
   const [deleteEmp, setDeleteEmp] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +37,7 @@ const EmployeePageSection: React.FC = () => {
     });
 
     return () => unsub();
-  }, [shopId]);
+  }, []);
 
   // Auto-revert Off-Site employees whose return date has passed
   useEffect(() => {
@@ -137,13 +136,13 @@ const EmployeePageSection: React.FC = () => {
             <IoMdPersonAdd size={16} /> Add Employee
           </button>
           <button
-            onClick={() => navigate(`/settings/${shopId || ""}`)}
+            onClick={() => navigate("/settings")}
             className="flex items-center gap-4 bg-white text-black font-normal px-5 h-9 rounded-md hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
           >
             <FiSettings size={16} /> Settings
           </button>
           <button
-            onClick={() => navigate(`/dashboard/${shopId || ""}`)}
+            onClick={() => navigate("/dashboard")}
             className="flex items-center gap-4 bg-white text-black px-5 h-9 rounded-md hover:scale-105 shadow-[0_0_12px_#FCCA0040] transition-all duration-300 ease-in-out cursor-pointer"
           >
             <FiArrowLeft size={16} /> Back to Dashboard

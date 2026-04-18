@@ -80,7 +80,7 @@ const EmployeeAlertModal: React.FC<Props> = ({
                   </p>
                   <p className="flex items-center gap-2 text-gray-400">
                     <IoLocationOutline className="size-4 text-[#FDC500]" />{" "}
-                    Store: {shopName}
+                    Location: {shopName}
                   </p>
                 </div>
               </div>

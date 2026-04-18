@@ -39,7 +39,7 @@ const ShopLoginSection: React.FC = () => {
       if (enteredPin === "1111") {
         sessionStorage.setItem("shop_auth", "true");
         toast.success("Access Granted");
-        navigate("/dashboard/S001");
+        navigate("/dashboard");
       } else {
         toast.error("Invalid PIN code");
         setPin(["", "", "", ""]);

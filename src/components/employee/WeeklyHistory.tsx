@@ -132,14 +132,13 @@ const getDateDocIds = (days: number): string[] => {
   return ids;
 };
 
-const parseDocToRecords = (dateId: string, data: any, filterShopId?: string): EmployeeRecord[] => {
+const parseDocToRecords = (dateId: string, data: any): EmployeeRecord[] => {
   const records: EmployeeRecord[] = [];
   Object.entries(data).forEach(([cameraKey, cameraVal]) => {
     if (cameraKey === "last_updated" || cameraKey === "cam1_frame") return;
     if (typeof cameraVal !== "object" || cameraVal === null) return;
     
-    // Filter by Shop ID if cameraKey represents shop
-    if (filterShopId && cameraKey !== filterShopId) return;
+    // No shop filter - show all camera tracking data
 
     Object.entries(cameraVal as Record<string, any>).forEach(([empId, empData]) => {
       if (typeof empData !== "object" || empData === null) return;
@@ -182,7 +181,6 @@ const FILTER_OPTIONS = [
 // ── Component ─────────────────────────────────────────────────────────────────
 const WeeklyHistory: React.FC = () => {
   const navigate = useNavigate();
-  const { shopId } = useParams<{ shopId: string }>();
   const [selected, setSelected] = useState("Last 7 Days");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -227,7 +225,7 @@ const WeeklyHistory: React.FC = () => {
 
           if (docSnap.exists()) {
             const data = docSnap.data();
-            fetchedChunks.push(...parseDocToRecords(dateId, data, shopId));
+            fetchedChunks.push(...parseDocToRecords(dateId, data));
           }
         }
 
@@ -250,7 +248,7 @@ const WeeklyHistory: React.FC = () => {
       }
     };
     fetchData();
-  }, [selected, shopId]);
+  }, [selected]);
 
   // ── Derived stats (all in seconds now) ───────────────────────────────────
   const employeeList = [
@@ -330,7 +328,7 @@ const WeeklyHistory: React.FC = () => {
               <FiDownload className="size-4" /> Download Report
             </button> */}
             <button
-              onClick={() => navigate(`/dashboard/${shopId || ""}`)}
+              onClick={() => navigate("/dashboard")}
               className="flex items-center justify-center gap-2 bg-white text-black px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition text-sm"
             >
               <FiArrowLeft /> Back

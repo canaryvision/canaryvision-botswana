@@ -452,7 +452,7 @@ interface CameraModalProps {
     status: string;
   } | null;
   onSaved: () => void;
-  shopId: string;
+  shopId?: string; // Optional since shops are removed
 }
 
 const CameraModal: React.FC<CameraModalProps> = ({
@@ -657,20 +657,15 @@ const SystemSettingSection: React.FC = () => {
   const [editCamera, setEditCamera] = useState<any | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<any | null>(null);
   const navigate = useNavigate();
-  const { shopId } = useParams<{ shopId: string }>();
 
-  // ── Load alert duration from shop document on mount
   useEffect(() => {
-    if (!shopId) return;
-    const shop = MOCK_SHOPS.find(s => s.id === shopId);
-    if (shop) {
-      setAlertDuration(shop.duration ?? 10);
-    }
+    // Default to 15 mins since shops are removed
+    setAlertDuration(15);
     isFirstLoad.current = false;
-  }, [shopId]);
+  }, []);
 
   useEffect(() => {
-    if (isFirstLoad.current || !shopId) return;
+    if (isFirstLoad.current) return;
 
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
@@ -690,14 +685,14 @@ const SystemSettingSection: React.FC = () => {
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
-  }, [alertDuration, shopId]);
+  }, [alertDuration]);
 
   useEffect(() => {
     setCameras([
       { id: "C1", name: "Entrance Cam", location: "Entrance", status: "Active" },
       { id: "C2", name: "Counter Cam", location: "Counter", status: "Active" }
     ]);
-  }, [shopId]);
+  }, []);
 
   const handleDeleteCamera = async () => {
     if (!deleteTarget) return;
@@ -722,7 +717,7 @@ const SystemSettingSection: React.FC = () => {
           </div>
           <div className="flex gap-4 mt-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/dashboard")}
               className="flex items-center gap-2 bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-100 transition"
             >
               <FiArrowLeft /> Back to Dashboard
@@ -925,7 +920,6 @@ const SystemSettingSection: React.FC = () => {
           setEditCamera(null);
         }}
         editData={editCamera}
-        shopId={shopId || ""}
         onSaved={() => {
           setCameraModalOpen(false);
           setEditCamera(null);

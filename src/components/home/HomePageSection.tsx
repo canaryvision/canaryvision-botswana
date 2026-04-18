@@ -132,24 +132,8 @@ const HomePageSection: React.FC = () => {
   const [hasShownAlerts, setHasShownAlerts] = useState(false);
   const [loading, setLoading] = useState(true);
   const todayDocId = getTodayDocId();
-  const { shopId } = useParams<{ shopId: string }>();
-  const [shopName, setShopName] = useState<string>("Shop");
-  const [alertThresholdSecs, setAlertThresholdSecs] = useState(15 * 60);
-
-  // Fetch shop settings (name, alert threshold)
-  useEffect(() => {
-    if (!shopId) return;
-    const unsub = onSnapshot(doc(db, "shops", shopId), (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setShopName(data.name || shopId);
-        const alertDurationMin = data.duration ?? 15;
-        setAlertThresholdSecs(alertDurationMin * 60);
-      }
-    });
-    return () => unsub();
-  }, [shopId]);
-
+  const [shopName] = useState<string>("CanaryVision");
+  const [alertThresholdSecs] = useState(15 * 60);
   const [currentDateTime, setCurrentDateTime] = useState('');
 
   useEffect(() => {
@@ -177,8 +161,7 @@ const HomePageSection: React.FC = () => {
           if (cameraKey === "last_updated" || cameraKey === "cam1_frame") return;
           if (typeof cameraVal !== "object" || cameraVal === null) return;
           
-          if (shopId && cameraKey !== shopId) return;
-
+          // No shop filter - show all tracking data
           Object.entries(cameraVal as Record<string, any>).forEach(([empId, empData]) => {
             if (typeof empData !== "object" || empData === null) return;
 
@@ -213,7 +196,7 @@ const HomePageSection: React.FC = () => {
     });
 
     return () => unsub();
-  }, [shopId, alertThresholdSecs, todayDocId]);
+  }, [alertThresholdSecs, todayDocId]);
 
   useEffect(() => {
     const alerted = employees.filter((e) => e.alert);
@@ -254,7 +237,7 @@ const HomePageSection: React.FC = () => {
           <span>{currentDateTime}</span>
         </div>
         <button
-          onClick={() => navigate(`/employee-history/${shopId || ""}`)}
+          onClick={() => navigate("/employee-history")}
           className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-[#FDC500] transition"
         >
           <FiCalendar /> Weekly History
@@ -266,7 +249,7 @@ const HomePageSection: React.FC = () => {
           <AiOutlineFolderView /> Live Feed
         </button>
         <button
-          onClick={() => navigate(`/employees/${shopId || ""}`)}
+          onClick={() => navigate("/employees")}
           className="bg-white text-black p-2 rounded-md hover:bg-[#FDC500] transition"
         >
           Employees

@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (isAuth !== "true") {
     // Redirect to the PIN login page if unauthorized
-    return <Navigate to="/shop-login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

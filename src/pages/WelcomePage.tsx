@@ -31,7 +31,7 @@ const WelcomePage: React.FC = () => {
 
         {/* Button */}
         <button
-          onClick={() => navigate("/shop-login")}
+          onClick={() => navigate("/login")}
           className="bg-[#FBCA0C] text-black font-medium text-lg px-10 py-3 w-full max-w-[400px] rounded-lg shadow-md hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
         >
           Let’s Start
