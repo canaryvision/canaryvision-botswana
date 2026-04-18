@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WelcomePage from "./pages/WelcomePage";
 import EmployeeHistoryPage from "./pages/EmployeeHistoryPage";
+import CameraLivePage from "./pages/CameraLivePage";
 // import ShopManagementPage from "./pages/ShopManagementPage";
 import ShopLoginPage from "./pages/ShopLoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/employees" element={<ProtectedRoute><EmployeePage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingPage /></ProtectedRoute>} />
           <Route path="/employee-history" element={<ProtectedRoute><EmployeeHistoryPage /></ProtectedRoute>} />
+          <Route path="/cameras" element={<ProtectedRoute><CameraLivePage /></ProtectedRoute>} />
         </Routes>
 
         {/* ✅ Global Toast Container */}

@@ -7,6 +7,7 @@ import {
   FiClock,
   FiChevronDown,
   FiChevronUp,
+  FiCamera,
 } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 // import { IoMdPersonAdd } from "react-icons/io";
@@ -241,6 +242,12 @@ const HomePageSection: React.FC = () => {
           className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-[#FDC500] transition"
         >
           <FiCalendar /> Weekly History
+        </button>
+        <button
+          onClick={() => navigate("/cameras")}
+          className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-md hover:bg-[#FDC500] transition"
+        >
+          <FiCamera className="text-[#FDC500]" /> Camera Live
         </button>
         <button
           onClick={() => setIsModalOpen(true)}
