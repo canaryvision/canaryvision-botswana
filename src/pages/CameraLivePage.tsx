@@ -1,5 +1,5 @@
 import React from "react";
-import { FiArrowLeft, FiCamera, FiMaximize2, FiRefreshCcw } from "react-icons/fi";
+import { FiArrowLeft, FiCamera, FiMaximize2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import BGImage from "../assets/bg image.jpg";
 
@@ -27,15 +27,13 @@ const CameraLivePage: React.FC = () => {
             <p className="text-gray-400 text-sm">Monitoring live streams from all active zones.</p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-full text-red-400 text-xs font-medium animate-pulse">
-                <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                LIVE
-            </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-md text-sm transition font-medium">
-                <FiRefreshCcw /> Refresh Streams
-            </button>
+          <div className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-full text-red-400 text-xs font-medium animate-pulse">
+            <span className="w-2 h-2 rounded-full bg-red-400"></span>
+            LIVE
+          </div>
+
         </div>
       </div>
 
@@ -55,35 +53,35 @@ const CameraLivePage: React.FC = () => {
 
             {/* Placeholder for Video Feed */}
             <div className="aspect-video bg-[#0A0E17] flex flex-col items-center justify-center relative overflow-hidden">
-               <div className="absolute inset-0 opacity-20 pointer-events-none">
-                 <div className="w-full h-px bg-white/10 absolute top-1/4"></div>
-                 <div className="w-full h-px bg-white/10 absolute top-1/2"></div>
-                 <div className="w-full h-px bg-white/10 absolute top-3/4"></div>
-                 <div className="h-full w-px bg-white/10 absolute left-1/4"></div>
-                 <div className="h-full w-px bg-white/10 absolute left-1/2"></div>
-                 <div className="h-full w-px bg-white/10 absolute left-3/4"></div>
-               </div>
-               
-               <div className="flex flex-col items-center gap-4 z-10">
-                 <div className="w-16 h-16 rounded-full bg-[#FDC50010] border border-[#FDC50040] flex items-center justify-center">
-                   <FiCamera className="text-[#FDC500] size-8 animate-pulse" />
-                 </div>
-                 <p className="text-gray-400 text-sm font-medium">Connecting to secure stream...</p>
-                 <div className="w-48 h-1 bg-[#1E293B] rounded-full overflow-hidden">
-                    <div className="h-full bg-[#FDC500] w-1/3 animate-[loading_2s_infinite]"></div>
-                 </div>
-               </div>
-               
-               {/* Scanlines Effect */}
-               <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle,rgba(253,197,0,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+              <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="w-full h-px bg-white/10 absolute top-1/4"></div>
+                <div className="w-full h-px bg-white/10 absolute top-1/2"></div>
+                <div className="w-full h-px bg-white/10 absolute top-3/4"></div>
+                <div className="h-full w-px bg-white/10 absolute left-1/4"></div>
+                <div className="h-full w-px bg-white/10 absolute left-1/2"></div>
+                <div className="h-full w-px bg-white/10 absolute left-3/4"></div>
+              </div>
+
+              <div className="flex flex-col items-center gap-4 z-10">
+                <div className="w-16 h-16 rounded-full bg-[#FDC50010] border border-[#FDC50040] flex items-center justify-center">
+                  <FiCamera className="text-[#FDC500] size-8 animate-pulse" />
+                </div>
+                <p className="text-gray-400 text-sm font-medium">Connecting to secure stream...</p>
+                <div className="w-48 h-1 bg-[#1E293B] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#FDC500] w-1/3 animate-[loading_2s_infinite]"></div>
+                </div>
+              </div>
+
+              {/* Scanlines Effect */}
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle,rgba(253,197,0,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
             </div>
 
             {/* Footer Overlay */}
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity z-10">
-               <div className="flex gap-2">
-                 <span className="px-2 py-1 bg-black/60 rounded text-[10px] font-mono border border-white/10">192.168.1.10{cam}</span>
-                 <span className="px-2 py-1 bg-black/60 rounded text-[10px] font-mono border border-white/10">30 FPS</span>
-               </div>
+              <div className="flex gap-2">
+                <span className="px-2 py-1 bg-black/60 rounded text-[10px] font-mono border border-white/10">192.168.1.10{cam}</span>
+                <span className="px-2 py-1 bg-black/60 rounded text-[10px] font-mono border border-white/10">30 FPS</span>
+              </div>
             </div>
           </div>
         ))}

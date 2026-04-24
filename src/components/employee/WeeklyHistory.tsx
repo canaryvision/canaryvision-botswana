@@ -11,9 +11,9 @@ import {
   FiTrendingUp,
   FiUsers,
 } from "react-icons/fi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase/config";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Interval {

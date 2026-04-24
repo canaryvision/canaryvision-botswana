@@ -435,10 +435,8 @@ import BGImage from "../../assets/bg image.jpg";
 import { BiSolidEdit } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiX, FiSave } from "react-icons/fi";
-import { MOCK_SHOPS } from "../../data/mockData";
 
 // ─── Camera Modal ─────────────────────────────────────────────────────────────
 interface CameraModalProps {
@@ -452,7 +450,6 @@ interface CameraModalProps {
     status: string;
   } | null;
   onSaved: () => void;
-  shopId?: string; // Optional since shops are removed
 }
 
 const CameraModal: React.FC<CameraModalProps> = ({
@@ -460,7 +457,6 @@ const CameraModal: React.FC<CameraModalProps> = ({
   onClose,
   editData,
   onSaved,
-  shopId,
 }) => {
   const [formData, setFormData] = useState({ name: "", location: "", ip: "" });
   const [errors, setErrors] = useState({ name: "", location: "", ip: "" });
@@ -469,9 +465,9 @@ const CameraModal: React.FC<CameraModalProps> = ({
   useEffect(() => {
     if (editData) {
       setFormData({
-        name: editData.name,
-        location: editData.location,
-        ip: editData.ip,
+        name: editData.name || "",
+        location: editData.location || "",
+        ip: editData.ip || "",
       });
     } else {
       setFormData({ name: "", location: "", ip: "" });
@@ -483,9 +479,9 @@ const CameraModal: React.FC<CameraModalProps> = ({
 
   const validate = () => {
     const newErrors = { name: "", location: "", ip: "" };
-    if (!formData.name.trim()) newErrors.name = "Camera name is required";
-    if (!formData.location.trim()) newErrors.location = "Location is required";
-    if (!formData.ip.trim()) newErrors.ip = "IP Address is required";
+    if (!formData.name?.trim()) newErrors.name = "Camera name is required";
+    if (!formData.location?.trim()) newErrors.location = "Location is required";
+    if (!formData.ip?.trim()) newErrors.ip = "IP Address is required";
     setErrors(newErrors);
     return !newErrors.name && !newErrors.location && !newErrors.ip;
   };
@@ -551,7 +547,7 @@ const CameraModal: React.FC<CameraModalProps> = ({
               </label>
               <input
                 type="text"
-                value={(formData as any)[field.key]}
+                value={(formData as any)[field.key] || ""}
                 onChange={(e) => {
                   setFormData({ ...formData, [field.key]: e.target.value });
                   setErrors((p) => ({ ...p, [field.key]: "" }));
@@ -689,8 +685,8 @@ const SystemSettingSection: React.FC = () => {
 
   useEffect(() => {
     setCameras([
-      { id: "C1", name: "Entrance Cam", location: "Entrance", status: "Active" },
-      { id: "C2", name: "Counter Cam", location: "Counter", status: "Active" }
+      { id: "C1", name: "Entrance Cam", location: "Entrance", ip: "192.168.1.101", status: "Active" },
+      { id: "C2", name: "Counter Cam", location: "Counter", ip: "192.168.1.102", status: "Active" }
     ]);
   }, []);
 

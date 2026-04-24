@@ -5,10 +5,11 @@ import BGImage from "../../assets/bg image.jpg";
 import { IoMdPersonAdd } from "react-icons/io";
 import { SlFlag } from "react-icons/sl";
 import AddEmployeeModal from "./AddEmployeeModal";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MarkOffSiteModal from "./MarkOffSiteModal";
 import { db } from "../../firebase/config";
-import { collection, onSnapshot, query, where, doc, deleteDoc } from "firebase/firestore";
+import { collection, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 const EmployeePageSection: React.FC = () => {
   const [deleteEmp, setDeleteEmp] = useState<string | null>(null);
@@ -19,7 +20,7 @@ const EmployeePageSection: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<any | null>(null);
   const [offSiteModalOpen, setOffSiteModalOpen] = useState(false);
   const [editEmployee, setEditEmployee] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch employees with real-time synchronization
@@ -53,9 +54,6 @@ const EmployeePageSection: React.FC = () => {
 
       if (expiredEmployees.length === 0) return;
 
-      const handleStatusToggle = async (emp: any) => {
-        setLocalEmployees(prev => prev.map(e => e.id === emp.id ? { ...e, status: "Active" } : e));
-      };
       console.log(
         `Auto-reverted ${expiredEmployees.length} employee(s) to Active.`,
       );
@@ -73,7 +71,7 @@ const EmployeePageSection: React.FC = () => {
     const matchesSearch =
       emp.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       emp.employeeId?.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     return matchesFilter && matchesSearch;
   });
 
@@ -107,11 +105,10 @@ const EmployeePageSection: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setActiveFilter(tab)}
-                className={`px-5 py-2 rounded-[10px] text-base font-normal transition-all ${
-                  activeFilter === tab
+                className={`px-5 py-2 rounded-[10px] text-base font-normal transition-all ${activeFilter === tab
                     ? "bg-[#FCCA00] text-black border-[#FCCA00] shadow-[0_0_10px_#FCCA0050]"
                     : "bg-[#1E293980] text-[#99A1AF] hover:bg-[#FCCA00] hover:text-black"
-                }`}
+                  }`}
               >
                 {tab}
               </button>
@@ -160,11 +157,10 @@ const EmployeePageSection: React.FC = () => {
           {filteredEmployees.map((emp, index) => (
             <div
               key={emp.firestoreId || index}
-              className={`relative bg-linear-to-r from-[#101828F2] to-[#030712F2] rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_0_20px_rgba(255,204,0,0.15)] transition-all duration-300 ease-in-out backdrop-blur-sm ${
-                deleteEmp === emp.firestoreId
+              className={`relative bg-linear-to-r from-[#101828F2] to-[#030712F2] rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_0_20px_rgba(255,204,0,0.15)] transition-all duration-300 ease-in-out backdrop-blur-sm ${deleteEmp === emp.firestoreId
                   ? "border-2 border-[#FB2C3680]"
                   : "border border-[#1E2939]"
-              }`}
+                }`}
             >
               {deleteEmp === emp.firestoreId ? (
                 <div className="flex flex-col items-center justify-center h-full text-center gap-4">
@@ -216,11 +212,10 @@ const EmployeePageSection: React.FC = () => {
 
                   <div className="flex flex-col items-center text-center mt-2">
                     <div
-                      className={`w-24 h-24 rounded-full border-4 ${
-                        emp.photo
+                      className={`w-24 h-24 rounded-full border-4 ${emp.photo
                           ? "border-[#FCCA00] shadow-[0_0_12px_#FCCA0040]"
                           : "border-[#3A3A3A] bg-[#0B1120]"
-                      } overflow-hidden mb-4`}
+                        } overflow-hidden mb-4`}
                     >
                       {emp.photo ? (
                         <img
@@ -241,22 +236,20 @@ const EmployeePageSection: React.FC = () => {
                         {emp.role}
                       </p>
                       <div
-                        className={`px-3 py-[3px] text-xs font-medium rounded-lg flex items-center gap-2 w-fit ${
-                          emp.status === "Active"
+                        className={`px-3 py-[3px] text-xs font-medium rounded-lg flex items-center gap-2 w-fit ${emp.status === "Active"
                             ? "bg-linear-to-r from-green-500/30 to-green-600/30 text-green-300 border border-green-500/40"
                             : emp.status === "Out"
                               ? "bg-linear-to-r from-red-500/30 to-red-600/30 text-red-300 border border-red-500/40"
                               : "bg-linear-to-r from-gray-500/30 to-gray-600/30 text-gray-300 border border-gray-500/40"
-                        }`}
+                          }`}
                       >
                         <span
-                          className={`w-2 h-2 rounded-full ${
-                            emp.status === "Active"
+                          className={`w-2 h-2 rounded-full ${emp.status === "Active"
                               ? "bg-green-400"
                               : emp.status === "Out"
                                 ? "bg-red-400"
                                 : "bg-gray-400"
-                          }`}
+                            }`}
                         />
                         {emp.status}
                       </div>
@@ -279,11 +272,10 @@ const EmployeePageSection: React.FC = () => {
                       setSelectedEmployee(emp);
                       setOffSiteModalOpen(true);
                     }}
-                    className={`mt-5 w-full flex items-center justify-center gap-4 border border-[#2A3244] font-normal rounded-md py-2 active:scale-[0.98] transition-all shadow-[0_2px_8px_rgba(255,255,255,0.05)] ${
-                      emp.status === "Off-Site"
+                    className={`mt-5 w-full flex items-center justify-center gap-4 border border-[#2A3244] font-normal rounded-md py-2 active:scale-[0.98] transition-all shadow-[0_2px_8px_rgba(255,255,255,0.05)] ${emp.status === "Off-Site"
                         ? "bg-[#FCCA00] text-black hover:bg-[#FFD633]"
                         : "bg-white text-black hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     <SlFlag />
                     {emp.status === "Off-Site"

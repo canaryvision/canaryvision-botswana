@@ -11,6 +11,7 @@ import CameraLivePage from "./pages/CameraLivePage";
 // import ShopManagementPage from "./pages/ShopManagementPage";
 import ShopLoginPage from "./pages/ShopLoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import BoxMonitoringPage from "./pages/BoxMonitoringPage";
  
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/settings" element={<ProtectedRoute><SettingPage /></ProtectedRoute>} />
           <Route path="/employee-history" element={<ProtectedRoute><EmployeeHistoryPage /></ProtectedRoute>} />
           <Route path="/cameras" element={<ProtectedRoute><CameraLivePage /></ProtectedRoute>} />
+          <Route path="/box/:id" element={<ProtectedRoute><BoxMonitoringPage /></ProtectedRoute>} />
         </Routes>
 
         {/* ✅ Global Toast Container */}

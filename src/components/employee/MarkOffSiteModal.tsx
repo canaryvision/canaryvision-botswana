@@ -163,7 +163,7 @@ const MarkOffSiteModal: React.FC<MarkOffSiteModalProps> = ({
                 Off-Site Reason <span className="text-red-400">*</span>
               </label>
               <textarea
-                value={reason}
+                value={reason || ""}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder="e.g. Client Visit - City Mall, Bank Work, Supplier Meeting..."
                 className="w-full bg-[#1E293980] border border-[#2A3244] rounded-lg px-4 py-3 text-sm text-gray-200 placeholder-gray-500 resize-none h-24 focus:outline-none focus:border-[#FCCA00] transition"
@@ -202,7 +202,7 @@ const MarkOffSiteModal: React.FC<MarkOffSiteModalProps> = ({
                 <input
                   type="date"
                   min={getTodayStr()}
-                  value={customDate}
+                  value={customDate || ""}
                   onChange={(e) => setCustomDate(e.target.value)}
                   className="w-full bg-[#1E293980] border border-[#2A3244] rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-[#FCCA00] transition scheme-dark"
                 />

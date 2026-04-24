@@ -4,7 +4,7 @@ import { MdCropFree } from "react-icons/md";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { db } from "../../firebase/config";
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
 interface AddEmployeeModalProps {
   isOpen: boolean;
@@ -635,7 +635,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
                   <input
                     type="text"
                     placeholder="Enter full name"
-                    value={formData.fullName}
+                    value={formData.fullName || ""}
                     onChange={(e) => {
                       setFormData({ ...formData, fullName: e.target.value });
                       setErrors((prev) => ({ ...prev, fullName: "" }));
@@ -668,7 +668,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
                   <input
                     type="text"
                     placeholder="Select role"
-                    value={formData.role}
+                    value={formData.role || ""}
                     onChange={(e) =>
                       setFormData({ ...formData, role: e.target.value })
                     }
@@ -684,7 +684,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
                   <input
                     type="text"
                     placeholder="Enter phone number"
-                    value={formData.phone}
+                    value={formData.phone || ""}
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
