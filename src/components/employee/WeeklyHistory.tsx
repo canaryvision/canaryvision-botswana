@@ -195,7 +195,7 @@ const WeeklyHistory: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [selectedEmployee, setSelectedEmployee] = useState("All Employees");
+  const [selectedEmployee, setSelectedEmployee] = useState("All Boxes");
   const [isEmployeeOpen, setIsEmployeeOpen] = useState(false);
   const employeeDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -249,7 +249,7 @@ const WeeklyHistory: React.FC = () => {
         });
 
         setAllRecords(fetchedChunks);
-        setSelectedEmployee("All Employees");
+        setSelectedEmployee("All Boxes");
         setExpandedRow(null);
       } catch (error) {
         console.error("Error fetching history:", error);
@@ -262,12 +262,12 @@ const WeeklyHistory: React.FC = () => {
 
   // ── Derived stats (all in seconds now) ───────────────────────────────────
   const employeeList = [
-    "All Employees",
+    "All Boxes",
     ...Array.from(new Set(allRecords.map((r) => r.employee_id))).sort(),
   ];
 
   const filteredRecords =
-    selectedEmployee === "All Employees"
+    selectedEmployee === "All Boxes"
       ? allRecords
       : allRecords.filter((r) => r.employee_id === selectedEmployee);
 
@@ -446,7 +446,7 @@ const WeeklyHistory: React.FC = () => {
                 <table className="w-full text-left border-collapse min-w-[640px]">
                   <thead className="sticky top-0 z-10">
                     <tr className="bg-[#10182880] text-[#99A1AF] border-b border-[#1E2939]">
-                      <th className="px-5 py-4 text-xs font-medium uppercase tracking-wide">Employee ID</th>
+                      <th className="px-5 py-4 text-xs font-medium uppercase tracking-wide">Box Name</th>
                       <th className="px-5 py-4 text-xs font-medium uppercase tracking-wide">Date</th>
                       <th className="px-5 py-4 text-xs font-medium uppercase tracking-wide">Status</th>
                       <th className="px-5 py-4 text-xs font-medium uppercase tracking-wide">
@@ -641,14 +641,14 @@ const WeeklyHistory: React.FC = () => {
             )}
           </div>
 
-          {/* ── Right Panel (Employee Summary) ── */}
+          {/* ── Right Panel (Box Summary) ── */}
           <div className="col-span-1">
             {selectedEmployee === "All Boxes" ? (
               <div className="bg-linear-to-br from-[#101828F2] to-[#030712F2] border-2 border-[#FDC500] rounded-2xl shadow-[0px_10px_40px_0px_#FDC50026] flex flex-col items-center justify-center h-[220px] p-6">
                 <FiUsers className="opacity-30 text-[#FDC500] size-10 mb-3" />
-                <p className="text-sm text-[#99A1AF]">No Employee Selected</p>
+                <p className="text-sm text-[#99A1AF]">No Box Selected</p>
                 <p className="text-xs text-[#4A5565] mt-1 text-center">
-                  Filter by employee to view individual summary
+                  Filter by box to view individual summary
                 </p>
               </div>
             ) : (
@@ -658,7 +658,7 @@ const WeeklyHistory: React.FC = () => {
                     {selectedEmployee}
                   </div>
                   <div>
-                    <p className="text-base font-normal">Employee {selectedEmployee}</p>
+                    <p className="text-base font-normal">Box {selectedEmployee}</p>
                     <p className="text-xs text-[#99A1AF]">
                       {selected} · {empRecords.length} day{empRecords.length !== 1 ? "s" : ""} of data
                     </p>
