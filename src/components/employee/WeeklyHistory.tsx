@@ -229,15 +229,16 @@ const WeeklyHistory: React.FC = () => {
 
         // Fetch each day's document from Firestore
         // Collection: "realtime" (Based on standard pattern for this project)
-        for (const dateId of dateIds) {
-          const docRef = doc(db, "realtime", dateId);
-          const docSnap = await getDoc(docRef);
+        // Fetch documents in parallel for much faster loading
+        const snapshots = await Promise.all(
+          dateIds.map(id => getDoc(doc(db, "realtime", id)))
+        );
 
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            fetchedChunks.push(...parseDocToRecords(dateId, data));
+        snapshots.forEach((snap, idx) => {
+          if (snap.exists()) {
+            fetchedChunks.push(...parseDocToRecords(dateIds[idx], snap.data()));
           }
-        }
+        });
 
         fetchedChunks.sort((a, b) => {
           const [da, ma, ya] = a.date.split("-").map(Number);
@@ -654,7 +655,7 @@ const WeeklyHistory: React.FC = () => {
             ) : (
               <div className="bg-linear-to-br from-[#101828F2] to-[#030712F2] border-2 border-[#FDC500] rounded-2xl shadow-[0px_10px_40px_0px_#FDC50026] p-6 space-y-5 text-white">
                 <div className="flex items-center gap-3 border-b border-[#1E2939] pb-5">
-                  <div className="w-11 h-11 flex items-center justify-center rounded-full bg-[#FDC50026] border-2 border-[#FDC500] text-[#FDC500] font-semibold text-lg">
+                  <div className="h-11 px-4 flex shrink-0 items-center justify-center rounded-full bg-[#FDC50026] border-2 border-[#FDC500] text-[#FDC500] font-semibold text-sm whitespace-nowrap">
                     {selectedEmployee}
                   </div>
                   <div>

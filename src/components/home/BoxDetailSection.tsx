@@ -80,6 +80,7 @@ const BoxDetailSection: React.FC = () => {
           ...data,
           operator_presence: sortedIntervals,
           Operator_presence_status: lastInterval?.operator_status === true || (!!lastInterval?.checkin && !lastInterval?.checkout),
+          raw_operator_status: lastInterval?.operator_status,
           eye_status: data.eyes_status?.trim() === "open",
         };
         setBoxData(mappedData);
@@ -147,10 +148,10 @@ const BoxDetailSection: React.FC = () => {
           <div className="bg-[#111827]/80 backdrop-blur-md border-2 border-[#FDC500] rounded-2xl p-6 shadow-xl">
             <div className="flex justify-between items-start mb-4">
               <p className="text-gray-400 text-xs font-bold uppercase tracking-widest">Eye Tracking</p>
-              <FiEye className={status ? (boxData.eye_status ? "text-blue-400" : "text-gray-500") : "text-gray-600"} size={20} />
+              <FiEye className={status && boxData.raw_operator_status !== false ? (boxData.eye_status ? "text-blue-400" : "text-gray-500") : "text-gray-600"} size={20} />
             </div>
             <div className="flex items-center gap-3">
-              {status ? (
+              {status && boxData.raw_operator_status !== false ? (
                 <>
                   <span className={`w-3 h-3 rounded-full ${boxData.eye_status ? 'bg-blue-400 shadow-[0_0_10px_#3b82f6]' : 'bg-gray-500'}`} />
                   <h3 className="text-2xl font-bold uppercase">{boxData.eye_status ? "OPEN" : "CLOSED"}</h3>

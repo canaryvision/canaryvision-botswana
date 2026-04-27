@@ -123,6 +123,7 @@ const HomePageSection: React.FC = () => {
           id: boxKey,
           name: boxKey.replace(/_/g, ' ').toUpperCase(), // Format cam1_box1 to CAM1 BOX1
           status: status,
+          operatorStatus: lastInterval?.operator_status,
           eyeStatus: eyeStatus,
           lastOut: lastInterval?.checkout || lastInterval?.checkin || "—",
           duration: formatDuration(totalSecs),
@@ -229,7 +230,7 @@ const HomePageSection: React.FC = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          {emp.status ? (
+                          {emp.status && emp.operatorStatus !== false ? (
                             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${emp.eyeStatus ? 'bg-blue-500/15 text-blue-400 border border-blue-500/30' : 'bg-gray-500/15 text-gray-400 border border-gray-500/30'}`}>
                               <span className={`w-1.5 h-1.5 rounded-full ${emp.eyeStatus ? 'bg-blue-400 shadow-[0_0_8px_#3b82f6]' : 'bg-gray-400'}`} />
                               {emp.eyeStatus ? 'Open' : 'Closed'}
@@ -247,7 +248,7 @@ const HomePageSection: React.FC = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4">
-                          {emp.status ? (
+                          {emp.status && emp.operatorStatus !== false ? (
                             <span className={`text-sm font-semibold ${emp.eyeStatus ? 'text-blue-300' : 'text-gray-500'}`}>
                               {emp.eyeDuration}
                             </span>
