@@ -643,7 +643,7 @@ const WeeklyHistory: React.FC = () => {
 
           {/* ── Right Panel (Employee Summary) ── */}
           <div className="col-span-1">
-            {selectedEmployee === "All Employees" ? (
+            {selectedEmployee === "All Boxes" ? (
               <div className="bg-linear-to-br from-[#101828F2] to-[#030712F2] border-2 border-[#FDC500] rounded-2xl shadow-[0px_10px_40px_0px_#FDC50026] flex flex-col items-center justify-center h-[220px] p-6">
                 <FiUsers className="opacity-30 text-[#FDC500] size-10 mb-3" />
                 <p className="text-sm text-[#99A1AF]">No Employee Selected</p>
