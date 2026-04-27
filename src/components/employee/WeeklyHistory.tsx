@@ -134,31 +134,41 @@ const getDateDocIds = (days: number): string[] => {
 
 const parseDocToRecords = (dateId: string, data: any): EmployeeRecord[] => {
   const records: EmployeeRecord[] = [];
-  Object.entries(data).forEach(([cameraKey, cameraVal]) => {
-    if (cameraKey === "last_updated" || cameraKey === "cam1_frame") return;
-    if (typeof cameraVal !== "object" || cameraVal === null) return;
-    
-    // No shop filter - show all camera tracking data
+  Object.entries(data).forEach(([boxKey, boxData]) => {
+    if (boxKey === "last_updated" || boxKey === "cam1_frame") return;
+    if (typeof boxData !== "object" || boxData === null) return;
 
-    Object.entries(cameraVal as Record<string, any>).forEach(([empId, empData]) => {
-      if (typeof empData !== "object" || empData === null) return;
-      const intervals: Interval[] = Array.isArray(empData.intervals)
-        ? empData.intervals.filter((iv: any) => iv.checkin && iv.checkout)
-        : [];
-      const insideSecs = calcInsideSecs(intervals);
-      const outsideSecs = calcOutsideSecs(intervals);
-      const gaps = getOutsideGaps(intervals);
-      const alert = gaps.some((g) => g.secs >= ALERT_THRESHOLD_SECS);
-      records.push({
-        employee_id: empId,
-        camera: cameraKey,
-        date: dateId,
-        status: empData.status === true,
-        intervals,
-        insideSecs,
-        outsideSecs,
-        alert,
-      });
+    // The data is at the boxKey level, e.g. cam1_box1
+    const presenceRaw = (boxData as any).operator_presence || [];
+    const rawIntervals = Array.isArray(presenceRaw)
+      ? presenceRaw
+      : Object.values(presenceRaw).sort((a: any, b: any) => (a.checkin || '').localeCompare(b.checkin || ''));
+
+    // Map to Interval format expected by WeeklyHistory
+    const intervals: Interval[] = rawIntervals
+      .filter((iv: any) => iv.checkin && iv.checkout)
+      .map((iv: any) => ({
+        checkin: iv.checkin,
+        checkout: iv.checkout,
+      }));
+
+    const lastInterval = rawIntervals[rawIntervals.length - 1];
+    const status = lastInterval?.operator_status === true || (!!lastInterval?.checkin && !lastInterval?.checkout);
+
+    const insideSecs = calcInsideSecs(intervals);
+    const outsideSecs = calcOutsideSecs(intervals);
+    const gaps = getOutsideGaps(intervals);
+    const alert = gaps.some((g) => g.secs >= ALERT_THRESHOLD_SECS);
+
+    records.push({
+      employee_id: boxKey.replace(/_/g, ' ').toUpperCase(), // Format cam1_box1 to CAM1 BOX1
+      camera: boxKey,
+      date: dateId,
+      status: status,
+      intervals,
+      insideSecs,
+      outsideSecs,
+      alert,
     });
   });
   return records;
@@ -166,7 +176,7 @@ const parseDocToRecords = (dateId: string, data: any): EmployeeRecord[] => {
 
 const formatDateLabel = (docId: string) => {
   const [dd, mm, yyyy] = docId.split("-");
-  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return `${dd} ${months[parseInt(mm) - 1]} ${yyyy}`;
 };
 
@@ -218,9 +228,9 @@ const WeeklyHistory: React.FC = () => {
         const fetchedChunks: EmployeeRecord[] = [];
 
         // Fetch each day's document from Firestore
-        // Collection: "tracking" (Based on standard pattern for this project)
+        // Collection: "realtime" (Based on standard pattern for this project)
         for (const dateId of dateIds) {
-          const docRef = doc(db, "tracking", dateId);
+          const docRef = doc(db, "realtime", dateId);
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
@@ -342,7 +352,7 @@ const WeeklyHistory: React.FC = () => {
             {
               icon: <FiUsers className="text-[#FCCA00] size-5" />,
               value: totalTracked,
-              label: "Total Employees",
+              label: "Total Boxes",
               color: "text-[#FCCA00]",
               border: "border-[#FCCA00]/20",
               bg: "bg-[#FCCA0008]",
